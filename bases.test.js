@@ -21,19 +21,27 @@ describe('Conversiones', () => {
         expect(bases.convert('P', 32, 20)).toBe('15');
     });
 
+    test('Letras minúsculas', () => {
+        expect(bases.convert('abc', 16, 16)).toBe('ABC');
+    });
+
     test('Números mal formados', () => {
-        expect(bases.convert('uno', 10, 16)).toThrow();
-        expect(bases.convert('1A', 10, 16)).toThrow();
-        expect(bases.convert('3', 2, 10)).toThrow();
-        expect(bases.convert('-3', 10, 10)).toThrow();
-        expect(bases.convert('2+2', 10, 10)).toThrow();
-        expect(bases.convert('3.5', 10, 10)).toThrow();
+        expect(() => bases.convert('uno', 10, 16)).toThrow();
+        expect(() => bases.convert('1A', 10, 16)).toThrow();
+        expect(() => bases.convert('3', 2, 10)).toThrow();
+        expect(() => bases.convert('-3', 10, 10)).toThrow();
+        expect(() => bases.convert('2+2', 10, 10)).toThrow();
+        expect(() => bases.convert('3.5', 10, 10)).toThrow();
     });
 
     test('Parámetros incorrectos', () => {
-        expect(bases.convert()).toThrow();
-        expect(bases.convert('10')).toThrow();
-        expect(bases.convert('10', 10)).toThrow();
+        expect(() => bases.convert()).toThrow();
+        expect(() => bases.convert('10')).toThrow();
+        expect(() => bases.convert('10', 10)).toThrow();
+        expect(() => bases.convert('10', 1, 10)).toThrow();
+        expect(() => bases.convert('10', 10, 1)).toThrow();
+        expect(() => bases.convert('10', 37, 10)).toThrow();
+        expect(() => bases.convert('10', 10, 37)).toThrow();
     });
 });
 
@@ -61,6 +69,8 @@ describe('Resta', () => {
 // MULTIPLICACIÓN
 describe('Multiplicación', () => {
     test('Multiplicación de dos números', () => {
+        expect(bases.multiply('9', '1', 10)).toBe('9');
+        expect(bases.multiply('9', '0', 10)).toBe('0');
         expect(bases.multiply('9', '5', 10)).toBe('45');
         expect(bases.multiply('7', '7', 8)).toBe('61');
         expect(bases.multiply('C', '4', 16)).toBe('30');
@@ -95,10 +105,13 @@ describe('División y residuo', () => {
 
         expect(bases.quotient('1100', '101', 2)).toBe('10');
         expect(bases.residue('1100', '101', 2)).toBe('10');
+    });
+    
+    test('División por cero', () => {
+        expect(() => bases.quotient('1', '0', 10)).toThrow();
+        expect(() => bases.residue('1', '0', 10)).toThrow();
         
-        expect(bases.quotient('1', '0', 10)).toThrow();
-        expect(bases.residue('1', '0', 10)).toThrow();
-        expect(bases.quotient('1', '0', 5)).toThrow();
-        expect(bases.residue('1', '0', 5)).toThrow();
+        expect(() => bases.quotient('1', '0', 5)).toThrow();
+        expect(() => bases.residue('1', '0', 5)).toThrow();
     });
 });
